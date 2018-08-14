@@ -1,7 +1,8 @@
 ﻿using System;
 using System.IO;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Nancy.Demo.Hosting.Kestrel;
+using Nancy.Owin;
 
 namespace dnca
 {
@@ -13,7 +14,15 @@ namespace dnca
         }
     }
 
-    class Program
+    public class Startup
+    {
+        public void Configure(IApplicationBuilder app)
+        {
+            app.UseOwin(x => x.UseNancy());
+        }
+    }
+
+    static class Program
     {
         static void Main(string[] args)
         {
