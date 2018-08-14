@@ -1,4 +1,6 @@
-FROM microsoft/dotnet:2.1-sdk-alpine AS build-env
+ARG VARIANT
+
+FROM microsoft/dotnet:2.1-sdk${VARIANT} AS build-env
 
 WORKDIR /app
 
@@ -11,8 +13,8 @@ COPY . ./
 RUN dotnet publish -c Release -o out
 
 # Build runtime image
-FROM microsoft/dotnet:2.1-runtime-alpine
+ARG VARIANT
+FROM microsoft/dotnet:2.1-runtime${VARIANT}
 WORKDIR /app
 COPY --from=build-env /app/out .
 ENTRYPOINT ["dotnet", "dnca.dll"]
-
